@@ -1,0 +1,102 @@
+/*
+* Copyright (c) 2011 Atommica: http://atommica.com
+* Created by Martín Conte Mac Donell (@Reflejo) <reflejo@gmail.com>
+*
+* Permission is hereby granted, free of charge, to any person obtaining a copy
+* of this software and associated documentation files (the "Software"), to deal
+* in the Software without restriction, including without limitation the rights
+* to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+* copies of the Software, and to permit persons to whom the Software is
+* furnished to do so, subject to the following conditions:
+*
+* The above copyright notice and this permission notice shall be included in
+* all copies or substantial portions of the Software.
+*
+* THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+* IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+* FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+* AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+* LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+* OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+* THE SOFTWARE.
+*/
+
+package com.atommica.plum
+{
+    import com.atommica.plum.geom.Parametric;
+    
+    import flash.display.DisplayObject;
+    import flash.events.EventDispatcher;
+    import flash.geom.Point;
+
+    public class Animation extends EventDispatcher
+    {
+        public function Animation(object:DisplayObject, path:Parametric, 
+                                  speed:Number, start:Number)
+        {
+            this.object = object;
+            this.speed = speed;
+            this.path = path;
+            this.t = start / this.path.arcLength;
+        }
+        
+        /**
+         * Pause animation
+         */
+        public function pause():void
+        {
+            this.paused = true;
+        }
+
+        /**
+         * Resume a paused animation
+         */
+        public function resume():void
+        {
+            this.paused = false;
+        }
+
+        /**
+         * Get next T from path, taking care the reverse flag and speed
+         */
+        final internal function nextT():Number
+        {
+            if (this.paused) return this.t;
+
+            this.t += (this.reverse) ? -this.speed: this.speed;
+            this.t = (this.t > 1) ? 1: this.t;
+
+            return this.t;
+        }
+        
+        /**
+         * This method is called on every tic. Just move the object 
+         */
+        final internal function step(t:Number):void
+        {
+            if (this.paused) return;
+            
+            var point:Point = this.path.getPoint(t);
+            this.object.x = point.x;
+            this.object.y = point.y;
+        }
+
+        /**
+         * Variables cleanup. 
+         */
+        final internal function destroy() : void
+        {
+            path = null;
+        }
+       
+        internal var object:DisplayObject;
+
+        public var speed:Number;
+        public var distance:Number;
+        public var paused:Boolean;
+        public var reverse:Boolean;
+        
+        private var path:Parametric;
+        private var t:Number;
+    }
+}

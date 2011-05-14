@@ -1,0 +1,33 @@
+# use glob syntax.
+syntax: glob
+
+# xcode noise
+*.pbxuser
+*.mode1
+*.mode1v3
+.actionScriptProperties
+.flashProjectProperties
+.project
+.settings/org.eclipse.core.resources.prefs
+*htpasswd
+src/isofp9/
+src/isofp10/
+bin-debug/
+bin-release/
+.metadata
+swfs/
+html-template
+*.swf
+*.swp
+*.swo
+*.swn
+*~
+.DS_Store
+._*
+*Report.txt
+
+# switch to regexp syntax.
+syntax: regexp
+^\.pc/
+\.svn.*
+
