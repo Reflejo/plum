@@ -31,13 +31,15 @@ package com.atommica.plum
 
     public class Animation extends EventDispatcher
     {
-        public function Animation(object:DisplayObject, path:Parametric, 
-                                  speed:Number, start:Number)
+        public function Animation(object:DisplayObject, path:Parametric, options:Object)
         {
             this.object = object;
-            this.speed = speed;
+            this.speed = options.speed;
+            this.reversed = options.reversed;
             this.path = path;
-            this.t = start / this.path.arcLength;
+            this.paused = options.paused;
+            this.orientToBezier = options.orientToBezier;
+            this.t = options.start / this.path.arcLength;
         }
         
         /**
@@ -63,7 +65,7 @@ package com.atommica.plum
         {
             if (this.paused) return this.t;
 
-            this.t += (this.reverse) ? -this.speed: this.speed;
+            this.t += (this.reversed) ? -this.speed: this.speed;
             this.t = (this.t > 1) ? 1: this.t;
 
             return this.t;
@@ -77,26 +79,37 @@ package com.atommica.plum
             if (this.paused) return;
             
             var point:Point = this.path.getPoint(t);
+            if (this.orientToBezier)
+            {
+                var dx:Number = point.x - this.object.x;
+                var dy:Number = point.y - this.object.y;
+                var angle:Number = Math.atan2(dy, dx) * RAD2DEG;
+
+                this.object.rotation = angle;
+            }
+
             this.object.x = point.x;
             this.object.y = point.y;
         }
 
         /**
-         * Variables cleanup. 
+         * General cleanup. 
          */
         final internal function destroy() : void
         {
             path = null;
         }
        
-        internal var object:DisplayObject;
+        protected static const RAD2DEG:Number = 180 / Math.PI; //precalculate for speed
 
-        public var speed:Number;
-        public var distance:Number;
-        public var paused:Boolean;
-        public var reverse:Boolean;
+        internal var object:DisplayObject;
         
+        private var orientToBezier:Boolean;
         private var path:Parametric;
+        private var paused:Boolean;
         private var t:Number;
+        
+        public var speed:Number;
+        public var reversed:Boolean;
     }
 }

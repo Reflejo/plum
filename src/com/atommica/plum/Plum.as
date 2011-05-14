@@ -57,17 +57,24 @@ package com.atommica.plum
             this.animations[object] = animation;
             
             if (!this.ticker.hasEventListener(Event.ENTER_FRAME))
-                ticker.addEventListener(Event.ENTER_FRAME, this.onTick);
+                this.ticker.addEventListener(Event.ENTER_FRAME, this.onTick);
         }
         
         /**
          * This is where you add animations. This class is static so you can do something 
          * like Plum.animate(ball, bezier);
          */
-        public static function animate(object:DisplayObject, path:Parametric, 
-                                       speed:Number=0.01, start:Number=0):Animation
+        public static function animate(object:DisplayObject, throughPath:Parametric, 
+                                       options:Object):Animation
         {
-            var animation:Animation = new Animation(object, path, speed, start);
+            // Load default options
+            for (var key:String in Plum.DEFAULTOPTIONS)
+            {
+                if (!(key in options))
+                    options[key] = Plum.DEFAULTOPTIONS[key];
+            }
+
+            var animation:Animation = new Animation(object, throughPath, options);
             Plum.instance.addAnimation(object, animation);
             return animation;
         }
@@ -109,6 +116,13 @@ package com.atommica.plum
         }
         
         public static const TICK:String = 'Tick';
+        private static const DEFAULTOPTIONS:Object = {
+            'speed': 0.01,
+            'start': 0,
+            'paused': false,
+            'reversed': false,
+            'orientToBezier': false
+        };
 
         private static var _instance:Plum = null;
         
