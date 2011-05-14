@@ -57,6 +57,14 @@ package com.atommica.plum
         {
             this.paused = false;
         }
+        
+        /**
+        * Calc distance in px from t
+        */
+        public function get distance():Number
+        {
+            return this.t * this.path.arcLength;
+        }
 
         /**
          * Get next T from path, taking care the reverse flag and speed
