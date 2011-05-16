@@ -117,7 +117,8 @@ package com.atommica.plum
         
         public static const TICK:String = 'Tick';
         private static const DEFAULTOPTIONS:Object = {
-            'speed': 0.01,
+            'speed': 100, // px per second
+            'fps': 24,
             'start': 0,
             'paused': false,
             'reversed': false,

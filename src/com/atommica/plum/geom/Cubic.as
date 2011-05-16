@@ -25,138 +25,64 @@
 
 package com.atommica.plum.geom
 {
-  public class Cubic implements IPoly
-  {
-    // properties
-    private var __c0X:Number;
-    private var __c1X:Number;
-    private var __c2X:Number;
-    private var __c3X:Number;
-    private var __c0Y:Number;
-    private var __c1Y:Number;
-    private var __c2Y:Number;
-    private var __c3Y:Number;
-    private var __count:uint;
+    
+    import flash.geom.Point;
 
-    public function Cubic()
+    public class Cubic implements IPoly
     {
-      reset();
-    }
-    
-    public function get degree():uint { return 3; }
+        public function Cubic()
+        {
+            this.reset();
+        }
 
-    public function reset():void
-    {
-      __c0X = 0;
-      __c1X = 0;
-      __c2X = 0;
-      __c3X = 0;
-      __c0Y = 0;
-      __c1Y = 0;
-      __c2Y = 0;
-      __c3Y = 0;
-      
-      __count = 0;
-    }
-    
-    public function addCoef( _cX:Number, _cY:Number ):void
-    {
-      if( __count < 4 && !isNaN(_cX) && !isNaN(_cY) )
-      {
-      	switch(__count)
-      	{
-      	  case 0:
-      	    __c0X = _cX;
-      	    __c0Y = _cY;
-      	  break;
-      	  
-      	  case 1:
-      	    __c1X = _cX;
-      	    __c1Y = _cY;
-      	  break;
-      	  
-      	  case 2:
-      	    __c2X = _cX;
-      	    __c2Y = _cY;
-      	  break;
-      	  
-      	  case 3:
-      	    __c3X = _cX;
-      	    __c3Y = _cY;
-      	  break;
-      	}
-      	__count++;
-      }
-    }
-    
-    public function getCoef( _indx:uint ):Object 
-    { 
-      if( _indx > -1 && _indx < 4 )
-      {
-      	var coef:Object = new Object();
-      	switch(_indx)
-      	{
-      	  case 0:
-      	    coef.X = __c0X;
-      	    coef.Y = __c0Y;
-      	  break;
-      	  
-      	  case 1:
-      	    coef.X = __c1X;
-      	    coef.Y = __c1Y;
-      	  break;
-      	  
-      	  case 2:
-      	    coef.X = __c2X;
-      	    coef.Y = __c2Y;
-      	  break;
-      	  
-      	  case 3:
-      	    coef.X = __c3X;
-      	    coef.Y = __c3Y;
-      	  break;
-      	}
-      }
-      return coef;
-    }
+        public function get degree():uint { return 3; }
 
+        public function reset():void
+        {
+            this.points = new Vector.<Point>();
+        }
 
-    public function getX(_t:Number):Number
-    {
-      return (__c0X + _t*(__c1X + _t*(__c2X + _t*(__c3X))));
-    }
+        public function addCoef(x:Number, y:Number):void
+        {
+            this.points.push(new Point(x, y));
+        }
 
-    public function getY(_t:Number):Number
-    {
-      return (__c0Y + _t*(__c1Y + _t*(__c2Y + _t*(__c3Y))));
-    }
-    
-    public function getXPrime(_t:Number):Number
-    {
-      return (__c1X + _t*(2.0*__c2X + _t*(3.0*__c3X)));
-    }
-    
-    public function getYPrime(_t:Number):Number
-    {
-      return (__c1Y + _t*(2.0*__c2Y + _t*(3.0*__c3Y)));
-    }
-    
-    public function getDeriv(_t:Number):Number
-    {
-      // use chain rule
-      var dy:Number = getYPrime(_t);
-      var dx:Number = getXPrime(_t);
-      return dy/dx;
-    }
+        public function getCoef(idx:uint):Point
+        { 
+            if(idx > -1 && idx < 4)
+                return this.points[idx];
+            
+            return null;
+        }
 
-    public function toString():String
-    {
-      var myStr:String = "coef[0] " + __c0X + "," + __c0Y;
-      myStr           += " coef[1] " + __c1X + "," + __c1Y;
-      myStr           += " coef[2] " + __c2X + "," + __c2Y;
-      myStr           += " coef[3] " + __c3X + "," + __c3Y;
-    
-      return myStr;
+        public function getX(t:Number):Number
+        {
+            return this.points[0].x + t * (this.points[1].x + t * (this.points[2].x + t * this.points[3].x));
+        }
+
+        public function getY(t:Number):Number
+        {
+            return this.points[0].y + t * (this.points[1].y + t * (this.points[2].y + t * this.points[3].y));
+        }
+
+        public function getXPrime(t:Number):Number
+        {
+            return this.points[1].x + t * (2.0 * this.points[2].x + t * (3.0 * this.points[3].x));
+        }
+
+        public function getYPrime(t:Number):Number
+        {
+            return this.points[1].y + t * (2.0 * this.points[2].y + t * (3.0 * this.points[3].y));
+        }
+
+        public function getDeriv(t:Number):Number
+        {
+            // use chain rule
+            var dy:Number = this.getYPrime(t);
+            var dx:Number = this.getXPrime(t);
+            return dy / dx;
+        }
+
+        private var points:Vector.<Point>;
     }
-  }
 }

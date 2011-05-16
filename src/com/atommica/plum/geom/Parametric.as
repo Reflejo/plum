@@ -142,16 +142,20 @@ package com.atommica.plum.geom
             var first:Point = this.getPoint(0.0);
             
             graphics.lineStyle(thickness, color);            
-            graphics.beginFill(color);            
             graphics.moveTo(first.x, first.y);
 
             while (t <= 1)
             {
                 var p:Point = this.getPoint(t);
                 if (dotted)
+                {
+                    graphics.beginFill(color);            
                     graphics.drawCircle(p.x, p.y, 2);
+                }
                 else
+                {
                     graphics.lineTo(p.x, p.y);
+                }
                 t += precision;
             }
             
@@ -160,10 +164,11 @@ package com.atommica.plum.geom
         /*
         * You SHOULD implement theses methods, but this isn't a must.
         */
-        public function getPoint(t:Number):Point { return null; } 
+        public function getPoint(t:Number, ignoreParam:Boolean=false):Point { return null; } 
         public function getXPrime(n:Number):Number { return 0.0; } 
         public function getYPrime(n:Number):Number { return 0.0; }         
         public function computeCoef():void {}
+        public function yAtX(x:Number):Array { return null; }         
 
         public static const ARC_LENGTH:String = 'A';
         public static const UNIFORM:String = 'U';

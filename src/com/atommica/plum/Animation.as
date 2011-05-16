@@ -34,12 +34,12 @@ package com.atommica.plum
         public function Animation(object:DisplayObject, path:Parametric, options:Object)
         {
             this.object = object;
-            this.speed = options.speed;
             this.reversed = options.reversed;
             this.path = path;
             this.paused = options.paused;
             this.orientToBezier = options.orientToBezier;
             this.t = options.start / this.path.arcLength;
+            this.speed = (options.speed / this.path.arcLength) / options.fps;
         }
         
         /**
@@ -56,6 +56,22 @@ package com.atommica.plum
         public function resume():void
         {
             this.paused = false;
+        }
+        
+        /**
+         * Calc distance in px from t
+         */
+        public function get distance():Number
+        {
+            return this.t * this.path.arcLength;
+        }
+
+        /**
+         * Set distance (Actaully we are changing t step, based on some d in px)
+         */
+        public function set distance(d:Number):void
+        {
+            this.t = d / this.path.arcLength;
         }
 
         /**

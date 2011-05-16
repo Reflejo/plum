@@ -29,8 +29,6 @@ package com.atommica.plum.geom
 
     public class ComplexPath extends Parametric
     {
-        private var paths:Array;
-
         public function ComplexPath(paths:Array)
         {
             this.paths = paths;
@@ -39,7 +37,7 @@ package com.atommica.plum.geom
         /**
         * Calculate a porportional t, based on total arcLength, and returns x, y.
         */
-        public override function getPoint(t:Number):Point
+        public override function getPoint(t:Number, ignoreParam:Boolean=false):Point
         {
             t = (t < 0) ? 0: t;
             t = (t > 1) ? 1: t;
@@ -58,9 +56,25 @@ package com.atommica.plum.geom
             }
             
             t = (d - lastSum) / this.paths[i - 1].arcLength;
-            return this.paths[i - 1].getPoint(t);
+            return this.paths[i - 1].getPoint(t, ignoreParam);
         }
 
+        /**
+         * Return the set of y-coordinates corresponding to the input x-coordinate
+         */
+        public override function yAtX(x:Number):Array
+        {
+            var res:Array = []
+            for each(var path:Parametric in this.paths)
+            {
+                var ys:Array = path.yAtX(x);
+                if (ys.length > 0)
+                    res.push.apply(null, ys);
+            }
+            
+            return res;
+        }
+        
         /**
          * Return arc-length of curve segment on [0, t].
          */
@@ -77,5 +91,7 @@ package com.atommica.plum.geom
             
             return sum;
         }
+
+        private var paths:Array;        
     }
 }

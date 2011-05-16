@@ -25,33 +25,33 @@
 
 package com.atommica.plum.geom
 {
-  public interface IPoly
-  {
-  	// access the degree of this polynomial
-  	function get degree():uint;
-  	
-  	// access and add coefficients
-    function addCoef( _cX:Number, _cY:Number):void;
-    function getCoef( _indx:uint ):Object;
+    import flash.geom.Point;
+
+    public interface IPoly
+    {
+      	// access the degree of this polynomial
+      	function get degree():uint;
+      	
+      	// access and add coefficients
+        function addCoef(x:Number, y:Number):void;
+        function getCoef(idx:uint):Point;
+        
+      	// clear coefficient values
+        function reset():void
     
-  	// clear coefficient values
-    function reset():void
-
-    // evaluate polynomial x-coordinate at a given t
-    function getX(_t:Number):Number
+        // evaluate polynomial x-coordinate at a given t
+        function getX(t:Number):Number
+        
+        // evaluate polynomial y-coordinate at a given t
+        function getY(t:Number):Number
     
-    // evaluate polynomial y-coordinate at a given t
-    function getY(_t:Number):Number
-
-    // evaluate x-coordinate of derivative at a given t
-    function getXPrime(_t:Number):Number
+        // evaluate x-coordinate of derivative at a given t
+        function getXPrime(t:Number):Number
+        
+        // evaluate y-coordinate of derivative at a given t
+        function getYPrime(t:Number):Number
     
-    // evaluate y-coordinate of derivative at a given t
-    function getYPrime(_t:Number):Number
-
-    // evaluate dy/dx at a given t
-    function getDeriv(_t:Number):Number
-
-    function toString():String
-  }
+        // evaluate dy/dx at a given t
+        function getDeriv(t:Number):Number
+    }
 }

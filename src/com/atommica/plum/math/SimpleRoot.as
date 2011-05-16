@@ -25,14 +25,12 @@ package com.atommica.plum.math
 {
 
     public class SimpleRoot
-    {
-        private var iterations:uint = 0;
-    
+    {    
         /**
         * Finds a single root given an interval 
         *
-        * x0:Number root isolated in interval [_x0, _x2]
-        * x2:Number root isolated in interval [_x0, _x2]
+        * x0:Number root isolated in interval [x0, x2]
+        * x2:Number root isolated in interval [x0, x2]
         * f:Function reference to function whose root in the interval is desired.
         *   Function accepts a single Number argument.
         * imax:uint maximum number of iterations (default MAX_ITER)
@@ -119,6 +117,8 @@ package com.atommica.plum.math
             return x1;            
         }  
         
+        private var iterations:uint = 0;
+ 
         private static const TOL:Number = 0.000001;
         private static const MAX_ITER:uint = 100;
     }
