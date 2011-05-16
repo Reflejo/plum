@@ -52,7 +52,7 @@ package com.atommica.plum
          */
         public function set speed(newSpeed:Number):void
         {
-            this._speed = newSpeed / this.arcFPS;
+            this._stepping = newSpeed / this.arcFPS;
         }
 
         /**
@@ -60,7 +60,7 @@ package com.atommica.plum
          */
         public function get speed():Number
         {
-            return this._speed;
+            return this._stepping * this.arcFPS;
         }
         
         /**
@@ -102,7 +102,7 @@ package com.atommica.plum
         {
             if (this.paused) return this.t;
 
-            this.t += (this.reversed) ? -this.speed: this.speed;
+            this.t += (this.reversed) ? -this._stepping: this._stepping;
             this.t = (this.t > 1) ? 1: this.t;
 
             return this.t;
@@ -141,7 +141,7 @@ package com.atommica.plum
 
         internal var object:DisplayObject;
         
-        private var _speed:Number;
+        private var _stepping:Number;
         private var arcFPS:uint;
         private var orientToPath:Boolean;
         private var path:Parametric;

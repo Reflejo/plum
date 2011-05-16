@@ -89,14 +89,11 @@ package com.atommica.plum
                 var t:Number = animation.nextT();
                 if (t < 0) continue;
 
-                if (t == 1) 
+                animation.step(t);
+                if (t >= 1) 
                 {
-                    animation.dispatchEvent(new Event(Event.COMPLETE));
+                    Plum.instance.dispatchEvent(new Event(Event.COMPLETE));
                     this.removeAnimationFrom(animation.object);
-                }
-                else
-                {
-                    animation.step(t);
                 }
             }
             
