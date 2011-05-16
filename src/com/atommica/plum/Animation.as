@@ -31,15 +31,36 @@ package com.atommica.plum
 
     public class Animation extends EventDispatcher
     {
-        public function Animation(object:DisplayObject, path:Parametric, options:Object)
+        public function Animation(object:DisplayObject, path:Parametric, 
+                                  options:Object)
         {
+            this.path = path;
+            
+            // Precalculate arc * FPS for speed
+            this.arcFPS = this.path.arcLength * options.fps;
+
             this.object = object;
             this.reversed = options.reversed;
-            this.path = path;
             this.paused = options.paused;
-            this.orientToBezier = options.orientToBezier;
+            this.orientToPath = options.orientToPath;
             this.t = options.start / this.path.arcLength;
-            this.speed = (options.speed / this.path.arcLength) / options.fps;
+            this.speed = options.speed;
+        }
+        
+        /**
+         * Set speed calculation, based on stage FPS. Defined as px/s
+         */
+        public function set speed(newSpeed:Number):void
+        {
+            this._speed = newSpeed / this.arcFPS;
+        }
+
+        /**
+         * Get pre-calculated speed
+         */
+        public function get speed():Number
+        {
+            return this._speed;
         }
         
         /**
@@ -95,7 +116,7 @@ package com.atommica.plum
             if (this.paused) return;
             
             var point:Point = this.path.getPoint(t);
-            if (this.orientToBezier)
+            if (this.orientToPath)
             {
                 var dx:Number = point.x - this.object.x;
                 var dy:Number = point.y - this.object.y;
@@ -120,12 +141,13 @@ package com.atommica.plum
 
         internal var object:DisplayObject;
         
-        private var orientToBezier:Boolean;
+        private var _speed:Number;
+        private var arcFPS:uint;
+        private var orientToPath:Boolean;
         private var path:Parametric;
         private var paused:Boolean;
         private var t:Number;
         
-        public var speed:Number;
         public var reversed:Boolean;
     }
 }

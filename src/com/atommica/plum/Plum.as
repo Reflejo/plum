@@ -122,7 +122,7 @@ package com.atommica.plum
             'start': 0,
             'paused': false,
             'reversed': false,
-            'orientToBezier': false
+            'orientToPath': false
         };
 
         private static var _instance:Plum = null;
