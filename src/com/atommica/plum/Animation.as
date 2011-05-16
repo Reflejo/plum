@@ -59,8 +59,8 @@ package com.atommica.plum
         }
         
         /**
-         * Calc distance in px from t
-         */
+        * Calc distance in px from t
+        */
         public function get distance():Number
         {
             return this.t * this.path.arcLength;
