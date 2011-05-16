@@ -134,7 +134,8 @@ package com.atommica.plum
          */
         final internal function destroy() : void
         {
-            path = null;
+            this.path = null;
+            this.destroyed = true;
         }
        
         protected static const RAD2DEG:Number = 180 / Math.PI; //precalculate for speed
@@ -148,6 +149,7 @@ package com.atommica.plum
         private var paused:Boolean;
         private var t:Number;
         
+        public var destroyed:Boolean;
         public var reversed:Boolean;
     }
 }
