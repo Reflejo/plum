@@ -35,7 +35,7 @@ package com.atommica.plum
                                   options:Object)
         {
             this.path = path;
-            
+
             // Precalculate arc * FPS for speed
             this.arcFPS = this.path.arcLength * options.fps;
 
@@ -48,7 +48,7 @@ package com.atommica.plum
         }
         
         /**
-         * Set speed calculation, based on stage FPS. Defined as px/s
+         * Set speed, defined as px / s. We need to know FPS to make this calculation
          */
         public function set speed(newSpeed:Number):void
         {
