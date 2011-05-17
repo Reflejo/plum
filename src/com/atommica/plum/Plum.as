@@ -45,8 +45,11 @@ package com.atommica.plum
         */
         public function removeAnimationFrom(object:DisplayObject):void
         {
-            this.animations[object].destroy();
-            delete this.animations[object];
+            if (object in this.animations)
+            {
+                this.animations[object].destroy();
+                delete this.animations[object];
+            }
         }
 
         /**
