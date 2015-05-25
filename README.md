@@ -72,4 +72,4 @@ See [demo here](http://reflejo.github.com/plum/).
  
 ## Author
  
-Martín Conte Mac Donell <Reflejo@gmail.com> - [@Reflejo](https://twitter.com/reflejo)
+Martín Conte Mac Donell <Reflejo@gmail.com> - [@fz](https://twitter.com/fz)
